@@ -1,0 +1,613 @@
+/* =========================
+   Project Detail Page
+========================= */
+
+.project-page {
+  background-color: #ffffff;
+}
+
+/* =========================
+   Project Sections
+========================= */
+
+.project-detail-section {
+  position: relative;
+  padding: 70px 0;
+}
+
+.project-title-section,
+.project-approach-section,
+.project-outcome-section,
+.project-process-section {
+  background-color: #ffffff;
+}
+
+.project-challenge-section {
+  background-color: var(--green);
+}
+
+.project-relevance-section {
+  background-color: var(--green-bg);
+}
+
+.project-quote-section {
+  background-color: var(--green-bg);
+}
+
+
+
+/* ===================================================
+   Sticky Right Side Navigation (Perfect Match Style)
+=================================================== */
+.project-side-nav {
+  position: fixed;
+  right: 4vw;           /* Adapts dynamically to any screen width */
+  top: 50%;             /* Centers the line cluster vertically */
+  transform: translateY(-50%);
+  z-index: 100;         /* FIX 1: Keeps the side-nav on top of colored sections and images */
+  font-family: "Lato", sans-serif;
+}
+
+.side-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  align-items: flex-end; /* Keeps lines flushed nicely to the right */
+}
+
+.side-nav-links li a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  height: 16px;
+  transition: gap 0.2s ease;
+}
+
+.side-nav-links li a:hover {
+  gap: 12px;
+}
+
+/* 1. The Circles (Idle State) */
+.nav-line {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0.45;
+  transition: background-color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* 2. The Text Labels (Hidden Idle State) */
+.side-nav-links .nav-text {
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  transform: translateX(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+/* ===================================================
+   Hover Interactions
+=================================================== */
+
+.side-nav-links li a:hover .nav-text {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--green);
+}
+
+.side-nav-links li a:hover .nav-line,
+.side-nav-links li.active .nav-line {
+  opacity: 1;
+  transform: scale(1.4);
+}
+
+.side-nav-links li a:hover .nav-line {
+  background-color: var(--green);
+}
+
+.side-nav-links li.active .nav-line {
+  background-color: var(--green);
+}
+
+/* Default colors per section */
+.project-side-nav:not(.on-intro) .nav-line {
+  background-color: var(--green);
+}
+.project-side-nav:not(.on-intro) .nav-text {
+  color: var(--green);
+}
+
+.project-side-nav.on-intro .nav-line {
+  background-color: #ffffff;
+}
+.project-side-nav.on-intro .nav-text {
+  color: #ffffff;
+}
+
+.project-side-nav.on-intro .side-nav-links li.active .nav-line,
+.project-side-nav.on-intro .side-nav-links li a:hover .nav-line {
+  background-color: #ffffff;
+  opacity: 1;
+  transform: scale(1.4);
+}
+
+.project-side-nav.on-intro .side-nav-links li a:hover .nav-text {
+  color: #ffffff;
+}
+
+
+/* =========================
+   Project Title Hero
+========================= */
+
+.project-title-hero {
+  position: relative;
+  min-height: 90vh;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 160px 0 440px;
+  overflow: hidden;
+  background-color: var(--green);
+}
+
+.project-title-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 85%;
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+.project-title-hero::after {
+  content: none;
+}
+
+.project-title-content {
+  position: relative;
+  z-index: 3;
+  width: min(100% - 80px, var(--container));
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* =========================
+   Project Base Layout
+========================= */
+
+.project-detail-layout {
+  position: relative;
+  width: min(100% - 80px, var(--container));
+  margin: 0 auto;
+}
+
+/* =========================
+   Titles & Headings
+========================= */
+
+.project-detail-title {
+  max-width: 100%;
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: clamp(34px, 5vw, 62px);
+  line-height: 1.15;
+  font-weight: 500;
+  color: #333333;
+  margin: 0 auto 24px;
+}
+
+.project-detail-title-white {
+  color: #ffffff;
+}
+
+.project-detail-heading-centered {
+  max-width: 650px;
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.15;
+  font-weight: 500;
+  color: #333333;
+  margin: 0 auto 36px;
+}
+
+.project-detail-subheading {
+  font-family: "Lato", sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: #333333;
+  margin: 56px 0 18px;
+}
+
+.project-detail-text .project-detail-subheading:first-child {
+  margin-top: 0;
+}
+
+/* =========================
+   Content Type 1: Centered Text
+========================= */
+
+
+
+.project-detail-text {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.project-detail-text p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  margin: 9px 0;
+}
+
+.project-detail-text p:last-child {
+  margin-bottom: 0;
+}
+
+.project-detail-text p span {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 700;
+}
+
+.project-target-group {
+  margin-top: 72px;
+  align-items: center;
+}
+
+/* =========================
+   Content Type 3: Full Width Content
+========================= */
+
+.project-detail-full {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.project-detail-full img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* =========================
+   Quotes
+========================= */
+
+.project-quote-label {
+  width: 100%;
+  max-width: var(--container);
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 700;
+  color: var(--green);
+  margin: 36px auto 14px;
+}
+
+.project-detail-quote-centered {
+  width: 100%;
+  max-width: var(--container);
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: clamp(22px, 5vw, 27px);
+  line-height: 1.25;
+  font-weight: 500;
+  color: #333333;
+  margin: 0 auto 42px;
+}
+
+/* =========================
+   Research Info Cards
+========================= */
+
+.project-research-cards {
+  width: min(100vw - 80px, 1000px);
+  max-width: none;
+  margin: 36px 0 64px 50%;
+  transform: translateX(-50%);
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.project-research-card {
+  background-color: #cfe6e08f;
+  border-radius: 0;
+  padding: 24px 26px;
+  box-shadow: none;
+
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.project-research-card-label {
+  display: block;
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 400;
+  color: #589082;
+  margin-bottom: 12px;
+}
+
+.project-research-card p {
+  color: #333333;
+  margin: 0;
+}
+
+/* =========================
+   Section Color Rules
+========================= */
+
+.project-challenge-section .project-detail-heading-centered,
+.project-challenge-section .project-detail-text p,
+.project-challenge-section .project-detail-quote-centered {
+  color: #ffffff;
+}
+
+.project-relevance-section .project-detail-heading-centered,
+.project-relevance-section .project-detail-quote-centered {
+  color: var(--green);
+}
+
+.project-quote-section .project-quote-label,
+.project-quote-section .project-detail-quote-centered {
+  color: var(--green);
+}
+
+/* =========================
+   Project Images
+========================= */
+
+.project-detail-image-block {
+  margin-top: 56px;
+  margin-bottom: 56px;
+}
+
+.project-detail-image-block img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.project-detail-image-small {
+  max-width: 650px;
+}
+
+.project-detail-storyboard {
+  max-width: 1000px;
+  margin-top: 24px;
+  margin-bottom: 72px;
+}
+
+.project-detail-storyboard img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.project-detail-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 72px;
+}
+
+.project-detail-image-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* =========================
+   Small Columns: Target Group
+========================= */
+
+.project-small-columns {
+  width: fit-content;
+  max-width: 100%;
+  margin: 30px auto 0;
+
+  display: grid;
+  grid-template-columns: 270px 380px;
+  column-gap: 0px;
+  align-items: center;
+}
+
+.project-small-column-text {
+  width: 270px;
+}
+
+.project-small-column-text p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  margin: 0;
+}
+
+.project-small-column-image {
+  width: 500px;
+}
+
+.project-small-column-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* =========================
+   Soundscape Map Visual
+========================= */
+
+.soundscape-map-visual {
+  position: relative;
+  width: 100vw;
+  min-height: 620px;
+  margin-top: 72px;
+  margin-bottom: 72px;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+.soundscape-map-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: blur(7px);
+  transform: scale(1.04);
+}
+
+.soundscape-map-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.soundscape-map-image {
+  position: relative;
+  z-index: 3;
+  width: min(100% - 80px, 1000px);
+}
+
+.soundscape-map-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* =========================
+   Outcome Prototype Visual
+========================= */
+
+.outcome-prototype-visual {
+  position: relative;
+  width: 100vw;
+  min-height: 560px;
+  margin-top: 90px;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.outcome-prototype-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: blur(7px);
+  transform: scale(1.04);
+}
+
+.outcome-prototype-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.outcome-prototype-images {
+  position: relative;
+  z-index: 3;
+  width: min(100% - 80px, 750px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 28px;
+  align-items: center;
+}
+
+.outcome-prototype-images img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* =========================
+   Project Detail Fade In Once
+========================= */
+
+.project-reveal-item {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    filter 0.55s ease;
+  will-change: opacity, transform, filter;
+}
+
+.project-reveal-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.project-page .sticky-about .nav-about-link {
+  color: var(--green-dark);
+}
+
+.project-page .sticky-about .nav-about-link:hover {
+  background-color: var(--green);
+  color: #ffffff;
+}
+
+.project-back-wrap {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 650px;
+  margin: 48px auto 0;
+}
+
+.sticky-about.on-intro .nav-about-link {
+  color: #ffffff;
+}
+
+.sticky-about.on-intro .nav-about-link:hover {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+
+
