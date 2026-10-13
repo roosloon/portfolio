@@ -1,87 +1,114 @@
-const header = document.querySelector(".site-header");
-const navLinks = document.querySelectorAll(".nav-links a");
+const sectionCandidates = ["profile", "experience", "projects", "creative", "contact"];
+const sections = sectionCandidates.filter((id) => document.getElementById(id));
+const sideNav = document.querySelector(".side-nav");
+const sideNavLinks = document.querySelectorAll(".side-nav-links li");
+const stickyAboutLinks = document.querySelectorAll(".sticky-about .nav-about-link");
 
-const sections = ["profile", "experience", "projects", "creative"];
+function updateSideNav(sectionId) {
+  if (!sideNav) return;
 
-function setActiveLink(sectionId) {
-  navLinks.forEach((link) => {
-    link.classList.remove("active");
+  sideNavLinks.forEach((li) => li.classList.remove("active"));
+  sideNav.classList.remove("on-intro", "on-profile", "on-experience", "on-projects", "on-creative", "on-contact");
 
-    if (link.getAttribute("href") === `#${sectionId}`) {
-      link.classList.add("active");
-    }
-  });
-}
-
-function updateHeader(sectionId) {
-  header.classList.remove("experience-active", "projects-active", "creative-active");
-
-  if (sectionId === "experience") {
-    header.classList.add("experience-active");
-  }
-
-  if (sectionId === "projects") {
-    header.classList.add("projects-active");
-  }
-
-  if (sectionId === "creative") {
-    header.classList.add("creative-active");
-  }
-}
-
-function scrollToSection(sectionId) {
-  if (sectionId === "profile") {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-    setActiveLink(sectionId);
+  if (!sectionId) {
+    sideNav.classList.add("on-intro");
     return;
   }
 
-  const section = document.getElementById(sectionId);
+  if (sectionId === "profile" || sectionId === "experience") sideNav.classList.add("on-profile");
+  if (sectionId === "projects") sideNav.classList.add("on-projects");
+  if (sectionId === "creative") sideNav.classList.add("on-creative");
+  if (sectionId === "contact") sideNav.classList.add("on-contact");
 
-  if (!section) return;
-
-  window.scrollTo({
-    top: section.offsetTop,
-    behavior: "smooth"
-  });
-
-  setActiveLink(sectionId);
+  const activeLink = document.querySelector(`.side-nav-links li a[href="#${sectionId}"]`);
+  if (activeLink) activeLink.closest("li").classList.add("active");
 }
 
-navLinks.forEach((link) => {
+function updateStickyColors(sectionId) {
+  const classes = ["section-intro", "section-profile", "section-experience", "section-projects", "section-creative", "section-contact"];
+  stickyAboutLinks.forEach((link) => link.classList.remove(...classes));
+
+  if (!sectionId) {
+    stickyAboutLinks.forEach((link) => link.classList.add("section-intro"));
+  } else if (sectionId === "profile" || sectionId === "experience") {
+    stickyAboutLinks.forEach((link) => link.classList.add("section-profile"));
+  } else if (sectionId === "projects") {
+    stickyAboutLinks.forEach((link) => link.classList.add("section-projects"));
+  } else if (sectionId === "creative") {
+    stickyAboutLinks.forEach((link) => link.classList.add("section-creative"));
+  } else if (sectionId === "contact") {
+    stickyAboutLinks.forEach((link) => link.classList.add("section-contact"));
+  }
+}
+
+sideNavLinks.forEach((li) => {
+  const link = li.querySelector("a");
+  if (!link) return;
+
   link.addEventListener("click", (event) => {
     const href = link.getAttribute("href");
-
     if (!href || !href.startsWith("#")) return;
 
     event.preventDefault();
 
     const sectionId = href.replace("#", "");
+    const section = document.getElementById(sectionId);
+    if (!section) return;
 
-    scrollToSection(sectionId);
+    window.scrollTo({
+      top: section.offsetTop,
+      behavior: "smooth"
+    });
   });
 });
 
 window.addEventListener("scroll", () => {
-  let currentSection = "profile";
+  let sideNavSection = null;
+  let btnSection = null;
 
   sections.forEach((sectionId) => {
     const section = document.getElementById(sectionId);
-
     if (!section) return;
 
+    if (window.scrollY >= section.offsetTop - 380) {
+      sideNavSection = sectionId;
+    }
     if (window.scrollY >= section.offsetTop - 83) {
-      currentSection = sectionId;
+      btnSection = sectionId;
     }
   });
 
-  setActiveLink(currentSection);
-  updateHeader(currentSection);
+  if (!btnSection && !document.querySelector(".intro-section")) {
+    const fallback = document.getElementById("projects") ? "projects" : "contact";
+    btnSection = fallback;
+    sideNavSection = fallback;
+  }
+  updateSideNav(sideNavSection);
+  updateStickyColors(btnSection);
 });
+
+// Initial state based on scroll position
+(function initColors() {
+  let sideNavSection = null;
+  let btnSection = null;
+  sections.forEach((sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+    if (window.scrollY >= section.offsetTop - 380) sideNavSection = sectionId;
+    if (window.scrollY >= section.offsetTop - 83) btnSection = sectionId;
+  });
+  if (!btnSection && !document.querySelector(".intro-section")) {
+    const fallback = document.getElementById("projects") ? "projects" : "contact";
+    btnSection = fallback;
+    sideNavSection = fallback;
+  }
+  updateSideNav(sideNavSection);
+  updateStickyColors(btnSection);
+})();
+
+/* =========================
+   Intro Fade / Blur
+========================= */
 
 const introContent = document.querySelector(".intro-content");
 const introSection = document.querySelector(".intro-section");
@@ -100,6 +127,10 @@ window.addEventListener("scroll", () => {
   introContent.style.filter = `blur(${blur}px)`;
   introContent.style.transform = `translateY(${translateY}px)`;
 });
+
+/* =========================
+   Project Card Visibility
+========================= */
 
 const projectCards = document.querySelectorAll(".case-card");
 
@@ -122,6 +153,10 @@ projectCards.forEach((card) => {
   projectCardObserver.observe(card);
 });
 
+/* =========================
+   Painting Carousel
+========================= */
+
 const paintingTrack = document.querySelector(".painting-track");
 const paintingCards = document.querySelectorAll(".painting-card");
 const paintingPrevButton = document.querySelector(".painting-arrow-left");
@@ -140,6 +175,8 @@ function updatePaintingCarousel() {
 
   const activeCard = paintingCards[activePaintingIndex];
   const viewport = document.querySelector(".painting-viewport");
+
+  if (!viewport) return;
 
   const viewportCenter = viewport.offsetWidth / 2;
   const activeCardCenter = activeCard.offsetLeft + activeCard.offsetWidth / 2;
@@ -174,6 +211,10 @@ if (paintingPrevButton && paintingNextButton && paintingCards.length > 0) {
   updatePaintingCarousel();
 }
 
+/* =========================
+   Contact Fade In
+========================= */
+
 const contactContent = document.querySelector(".contact-content");
 
 if (contactContent) {
@@ -195,15 +236,18 @@ if (contactContent) {
   contactObserver.observe(contactContent);
 }
 
+/* =========================
+   Experience Fade In Once
+========================= */
+
 const experienceItems = document.querySelectorAll(".experience-item");
 
 const experienceObserver = new IntersectionObserver(
-  (entries) => {
+  (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
-      } else {
-        entry.target.classList.remove("is-visible");
+        observer.unobserve(entry.target);
       }
     });
   },
@@ -216,13 +260,96 @@ experienceItems.forEach((item) => {
   experienceObserver.observe(item);
 });
 
-const scrollTopButton = document.querySelector(".scroll-top-button");
+/* =========================
+   Project Detail Fade In Once
+   Reveal per section
+========================= */
 
-if (scrollTopButton) {
-  scrollTopButton.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
+const projectRevealItems = document.querySelectorAll(`
+  .project-page .project-detail-section:not(.project-title-hero) > .project-detail-layout
+`);
+
+const projectRevealObserver = new IntersectionObserver(
+  (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
     });
+  },
+  {
+    threshold: 0.05,
+    rootMargin: "0px 0px 180px 0px"
+  }
+);
+
+projectRevealItems.forEach((item) => {
+  item.classList.add("project-reveal-item");
+  projectRevealObserver.observe(item);
+});
+
+/* =========================
+   Project Title Fade / Blur
+========================= */
+
+const projectTitleContent = document.querySelector(".project-title-hero .project-title-content");
+const projectTitleBg = document.querySelector(".project-title-hero .project-title-background");
+const projectTitleSection = document.querySelector(".project-title-hero");
+
+window.addEventListener("scroll", () => {
+  if (!projectTitleContent || !projectTitleSection) return;
+
+  const sectionHeight = projectTitleSection.offsetHeight;
+  const scrollProgress = Math.min(window.scrollY / sectionHeight, 1);
+
+  projectTitleContent.style.opacity = 1 - scrollProgress;
+  projectTitleContent.style.filter = `blur(${scrollProgress * 12}px)`;
+  projectTitleContent.style.transform = `translateY(${scrollProgress * -40}px)`;
+
+  if (projectTitleBg) {
+    projectTitleBg.style.opacity = 1 - scrollProgress;
+    projectTitleBg.style.filter = `blur(${scrollProgress * 12}px)`;
+    projectTitleBg.style.transform = `translateY(${scrollProgress * -40}px)`;
+  }
+});
+
+/* =========================
+   Side Nav Active Section
+========================= */
+
+const projectSections = ["challenge", "approach", "outcome", "process", "relevance"];
+
+function updateProjectNav() {
+  let currentSection = null;
+
+  projectSections.forEach((sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+    if (window.scrollY >= section.offsetTop - 350) {
+      currentSection = sectionId;
+    }
   });
+
+  document.querySelectorAll(".project-side-nav .side-nav-links li").forEach((li) => {
+    li.classList.remove("active");
+  });
+
+  if (currentSection) {
+    const activeLink = document.querySelector(`.project-side-nav .side-nav-links li a[href="#${currentSection}"]`);
+    if (activeLink) activeLink.closest("li").classList.add("active");
+  }
+
+  const projectNav = document.querySelector(".project-side-nav");
+  const projectSticky = document.querySelector(".project-sticky-left");
+  const projectStickyAbout = document.querySelector(".sticky-about");
+  if (projectNav) {
+    const isLight = !currentSection || currentSection === "challenge";
+    projectNav.classList.toggle("on-intro", isLight);
+    if (projectSticky) projectSticky.classList.toggle("on-intro", isLight);
+    if (projectStickyAbout) projectStickyAbout.classList.toggle("on-intro", isLight);
+  }
 }
+
+window.addEventListener("scroll", updateProjectNav);
+updateProjectNav();
