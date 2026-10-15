@@ -318,7 +318,7 @@ window.addEventListener("scroll", () => {
    Side Nav Active Section
 ========================= */
 
-const projectSections = ["challenge", "approach", "outcome", "process", "relevance"];
+const projectSections = ["challenge", "methods", "approach", "outcome", "process", "relevance", "more-information"];
 
 function updateProjectNav() {
   let currentSection = null;
